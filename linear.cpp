@@ -76,41 +76,50 @@ linear::linear(term t) : univariate(t) {
  *
  */
 void linear::printRoots() const {
-    if (numTerms == 0) {
-        cout << "No roots" << endl;
-        return;
-    }
+//    if (numTerms == 0) {
+//        cout << "No roots" << endl;
+//        return;
+//    }
     char* inp = new char[2];
     inp[0] = variable;
     inp[1] = '\0';
 
     term* term0 = new term(inp);
-    term* term1 = new term("0");
+    term* term1 = new term("1");
 
     delete [] inp;
 
-    bool decFirst = true;
+    bool decm = true, decc = true;
     linear* q = new linear(*this);
     q->addOrRemoveTerm(term0);
     if (q->numTerms < numTerms) {
         q->addOrRemoveTerm((*this)[0]);
-        decFirst = false;
+        decm = false;
     }
     q->addOrRemoveTerm(term1);
+    if (q->numTerms < numTerms) {
+        term* term2 = new term("-1");
+        q->addOrRemoveTerm(term2);
+        delete term2;
+        decc = false;
+    }
 
     // Delete the terms
     delete term0;
     delete term1;
 
+    if (decm) {
+        (*(*q)[0])[-1]--;
+    }
+    if (decc) {
+        (*(*q)[1])[-1]--;
+    }
+
     int m, c;
     m = (*(*q)[0])[-1];
-    c = (*(*q)[0])[-1];
+    c = (*(*q)[1])[-1];
 
     delete q;
-
-    if (decFirst) {
-        m--;
-    }
 
     if (m == 0) {
         cout << "No roots" << endl;

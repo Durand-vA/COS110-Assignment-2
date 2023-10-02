@@ -270,6 +270,10 @@ term &term::operator=(const term &other) {
     coefficient = other.coefficient;
     numVariables = other.numVariables;
 
+    if (coefficient == 0) {
+        numVariables = 0;
+    }
+
     delete [] variables;
     delete [] powers;
 
@@ -460,15 +464,15 @@ int min(int n, int m) {
  * @return this term multiplied by other term
  */
 const term term::operator*(const term &other) const {
-    term out(*this);
-//    for (int i = 0; i < numVariables; i++) {
-//        out.addVariable(variables[i], powers[i]);
-//    }
+    term out;
+    for (int i = 0; i < numVariables; i++) {
+        out.addVariable(variables[i], powers[i]);
+    }
     for (int i = 0; i < other.numVariables; i++) {
         out.addVariable(other.variables[i], other.powers[i]);
     }
-    out.coefficient *= other.coefficient;
-    return out;
+    out.coefficient = coefficient * other.coefficient;
+    return term(out);
 }
 /**
  * Multiply this term by other term
@@ -495,7 +499,7 @@ int pow(int val, int power) {
     for (int i = 0; i < power; i++) {
         out *= val;
     }
-    return val;
+    return out;
 }
 /**
  * Substitute values for variables
@@ -517,6 +521,8 @@ const term term::operator()(char* vars, int* vals, int numVals) const {
     temp.coefficient = coeff;
 
     return term(temp);
+    // expected 864*b^5*w^4
+    // actual 48*b^5*w^4
 }
 /**
  * Substitute values for variables
@@ -532,19 +538,23 @@ const term term::operator()(string inp) const {
     std::string s;
     while (std::getline(ss, s, ' ')) {
         char var = s[0];
-        if (getVarIndex(var) != -1) {
+        int index = getVarIndex(var);
+        if (index != -1) {
             s.erase(0, 2);
             std::stringstream st;
             int n;
             st << s;
             st >> n;
-            coeff *= pow(n, powers[getVarIndex(var)]);
+            coeff *= pow(n, powers[index]);
             temp.removeVariable(var);
         }
     }
     temp.coefficient = coeff;
 
     return term(temp);
+
+    // expected 268435456
+    // actual 128
 }
 /**
  * Equality operator
@@ -616,7 +626,7 @@ bool term::operator>(const term &other) const {
         }
     }
 
-    return numVariables < other.numVariables;
+    return numVariables > other.numVariables;
 }
 /**
  * Get coefficient or Power of variable at index idx

@@ -311,6 +311,51 @@ void univariateTest() {
     delete[] terms3;
     delete[] terms4;
 
+    univariate multi1("2*x^2 + 3*x - 4");
+    univariate multi2("2*x^2 + 3*x - 4");
+    univariate multi3("5*y^2 + 4*y - 2");
+    univariate multi4("5");
+
+    polynomial* m12 = multi1 * multi2;
+    polynomial* m13 = multi1 * multi3;
+    polynomial* m14 = multi1 * multi4;
+    polynomial* m34 = multi3 * multi4;
+
+    std::string s12, s13, s14, s34;
+    std::stringstream ss1;
+    ss1 << *m12;
+    std::getline(ss1, s12);
+
+    ss1 << *m13;
+    std::getline(ss1, s13);
+
+    ss1 << *m14;
+    std::getline(ss1, s14);
+
+    ss1 << *m34;
+    std::getline(ss1, s34);
+
+    if (s12 != "4*x^4 + 12*x^3 + -7*x^2 + -24*x + 16") {
+        std::cout << "Error in multiplication of m1 and m2\n";
+        std::cout << s12 << '\n';
+    }
+    if (s13 != "-4*x^2 + 10*x^2*y^2 + 8*x^2*y + -6*x + 15*x*y^2 + 12*x*y + -20*y^2 + -16*y + 8") {
+        std::cout << "Error in multiplication of m1 and m3\n";
+        std::cout << s13 << '\n';
+    }
+    if (s14 != "10*x^2 + 15*x + -20") {
+        std::cout << "Error in multiplication of m1 and m4\n";
+        std::cout << s14 << '\n';
+    }
+    if (s34 != "25*y^2 + 20*y + -10") {
+        std::cout << "Error in multiplication of m3 and m4\n";
+        std::cout << s34 << '\n';
+    }
+
+    delete m12;
+    delete m13;
+    delete m14;
+    delete m34;
 }
 
 void bivariateTest() {
@@ -614,6 +659,9 @@ void linearTest() {
     std::cout << lin8;
     lin8.printRoots();
 
+    linear lin9("2*x - 1");
+    lin9.printRoots();
+
     // Delete dynamic memory
     for (int i = 0; i < 2; i++) {
         delete terms[i];
@@ -767,8 +815,8 @@ void ellipseTest() {
 }
 
 int main() {
-    termTest();
-//    univariateTest();
+//    termTest();
+    univariateTest();
 //    bivariateTest();
 //    quadraticTest();
 //    linearTest();

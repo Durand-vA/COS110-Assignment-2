@@ -288,6 +288,7 @@ polynomial &univariate::operator-=(const polynomial &other) {
  */
 polynomial* univariate::operator*(const polynomial &other) const {
     univariate* result = new univariate(term(0, 0, NULL, NULL));
+    result->clearTerms();
 
     for (int i = 0; i < numTerms; i++) {
         for (int j = 0; j < other.getNumTerms(); j++) {
@@ -306,6 +307,7 @@ polynomial* univariate::operator*(const polynomial &other) const {
  */
 polynomial &univariate::operator*=(const polynomial &other) {
     univariate* result = new univariate(term(0, 0, NULL, NULL));
+    result->clearTerms();
 
     for (int i = 0; i < numTerms; i++) {
         for (int j = 0; j < other.getNumTerms(); j++) {
@@ -314,7 +316,7 @@ polynomial &univariate::operator*=(const polynomial &other) {
             delete t;
         }
     }
-    if (result->getNumTerms() != 0 && (*result)[0]->getNumVariables() == 1) {
+    if (result->getNumTerms() != 0/* && (*result)[0]->getNumVariables() == 1*/) {
         result->degree = result->terms[0]->getDegree();
     }
     if (result->isUnivariate()) {

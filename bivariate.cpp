@@ -334,6 +334,7 @@ polynomial &bivariate::operator-=(const polynomial &other) {
  */
 polynomial* bivariate::operator*(const polynomial &other) const {
     bivariate* result = new bivariate(term(0, 0, NULL, NULL));
+    result->clearTerms();
 
     for (int i = 0; i < numTerms; i++) {
         for (int j = 0; j < other.getNumTerms(); j++) {
@@ -351,6 +352,7 @@ polynomial* bivariate::operator*(const polynomial &other) const {
  */
 polynomial &bivariate::operator*=(const polynomial &other) {
     bivariate* result = new bivariate(term(0, 0, NULL, NULL));
+    result->clearTerms();
 
     for (int i = 0; i < numTerms; i++) {
         for (int j = 0; j < other.getNumTerms(); j++) {
@@ -359,7 +361,7 @@ polynomial &bivariate::operator*=(const polynomial &other) {
             delete t;
         }
     }
-    if (result->getNumTerms() != 0 && (*result)[0]->getNumVariables() == 2) {
+    if (result->getNumTerms() != 0/* && (*result)[0]->getNumVariables() == 2*/) {
         result->degree = result->terms[0]->getDegree();
     }
     if (result->isBivariate()) {
