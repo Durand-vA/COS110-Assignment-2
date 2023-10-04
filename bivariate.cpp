@@ -351,7 +351,7 @@ polynomial* bivariate::operator*(const polynomial &other) const {
  * @return This polynomial
  */
 polynomial &bivariate::operator*=(const polynomial &other) {
-    bivariate* result = new bivariate(term(0, 0, NULL, NULL));
+    bivariate* result = new bivariate(degree, v1, v2);
     result->clearTerms();
 
     for (int i = 0; i < numTerms; i++) {

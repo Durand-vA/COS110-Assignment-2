@@ -356,6 +356,13 @@ void univariateTest() {
     delete m13;
     delete m14;
     delete m34;
+
+    univariate m("a^2 + -a + 2");
+    univariate m1("5");
+
+    m *= m1;
+    std::cout << m;
+
 }
 
 void bivariateTest() {
@@ -660,7 +667,12 @@ void linearTest() {
     lin8.printRoots();
 
     linear lin9("2*x - 1");
+    std::cout << lin9;
     lin9.printRoots();
+
+    linear lin10("-1*x - 1");
+    std::cout << lin10;
+    lin10.printRoots();
 
     // Delete dynamic memory
     for (int i = 0; i < 2; i++) {
@@ -815,12 +827,12 @@ void ellipseTest() {
 }
 
 int main() {
-//    termTest();
+    termTest();
     univariateTest();
-//    bivariateTest();
-//    quadraticTest();
-//    linearTest();
-//    circleTest();
-//    ellipseTest();
+    bivariateTest();
+    quadraticTest();
+    linearTest();
+    circleTest();
+    ellipseTest();
     return 0;
 }

@@ -89,31 +89,31 @@ void linear::printRoots() const {
 
     delete [] inp;
 
-    bool decm = true, decc = true;
     linear* q = new linear(*this);
+
+    int prevNTerms = q->numTerms;
     q->addOrRemoveTerm(term0);
-    if (q->numTerms < numTerms) {
-        q->addOrRemoveTerm((*this)[0]);
-        decm = false;
+    if (q->numTerms < prevNTerms) {
+        term* nTerm0 = new term(!(*term0));
+        q->addOrRemoveTerm(nTerm0);
+        delete nTerm0;
+    } else {
+        (*(*q)[0])[-1]--;
     }
+
+    prevNTerms = q->numTerms;
     q->addOrRemoveTerm(term1);
-    if (q->numTerms < numTerms) {
-        term* term2 = new term("-1");
-        q->addOrRemoveTerm(term2);
-        delete term2;
-        decc = false;
+    if (q->numTerms < prevNTerms) {
+        term* nTerm1 = new term(!(*term1));
+        q->addOrRemoveTerm(nTerm1);
+        delete nTerm1;
+    } else {
+        (*(*q)[1])[-1]--;
     }
 
     // Delete the terms
     delete term0;
     delete term1;
-
-    if (decm) {
-        (*(*q)[0])[-1]--;
-    }
-    if (decc) {
-        (*(*q)[1])[-1]--;
-    }
 
     int m, c;
     m = (*(*q)[0])[-1];

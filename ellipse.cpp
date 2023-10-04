@@ -69,13 +69,70 @@ void ellipse::printStats() const {
         std::cout << "Not a real ellipse\n";
         return;
     }
-    double c, d, f;
-    c = (*(*this)[0])[-1];
-    d = (*(*this)[1])[-1];
-    f = (*(*this)[2])[-1];
+    char* inp = new char[4];
+    inp[0] = v1;
+    inp[1] = '^';
+    inp[2] = '2';
+    inp[3] = '\0';
 
-    if (f >= 0) {
-        std::cout << "Not a real circle\n";
+    term* term0 = new term(inp);
+    inp[0] = v2;
+    term* term1 = new term(inp);
+    term* term2 = new term("1");
+
+    delete [] inp;
+
+    ellipse* ell = new ellipse(*this);
+
+    int prevNTerms = ell->numTerms;
+    ell->addOrRemoveTerm(term0);
+    if (ell->numTerms < prevNTerms) {
+        term* nTerm0 = new term(!(*term0));
+        ell->addOrRemoveTerm(nTerm0);
+        delete nTerm0;
+    } else {
+        (*(*ell)[0])[-1]--;
+    }
+
+    prevNTerms = ell->numTerms;
+    ell->addOrRemoveTerm(term1);
+    if (ell->numTerms < prevNTerms) {
+        term* nTerm1 = new term(!(*term1));
+        ell->addOrRemoveTerm(nTerm1);
+        delete nTerm1;
+    } else {
+        (*(*ell)[1])[-1]--;
+    }
+
+    prevNTerms = ell->numTerms;
+    ell->addOrRemoveTerm(term2);
+    if (ell->numTerms < prevNTerms) {
+        term* nTerm2 = new term(!(*term2));
+        ell->addOrRemoveTerm(nTerm2);
+        delete nTerm2;
+    } else {
+        (*(*ell)[2])[-1]--;
+    }
+
+    // Delete the terms
+    delete term0;
+    delete term1;
+    delete term2;
+
+    if (!ell->isEllipse()) {
+        std::cout << "Not a real ellipse\n";
+        return;
+    }
+
+    double c, d, f;
+    c = (*(*ell)[0])[-1];
+    d = (*(*ell)[1])[-1];
+    f = (*(*ell)[2])[-1];
+
+    delete ell;
+
+    if (f >= 0 || c <= 0 || d <= 0) {
+        std::cout << "Not a real ellipse\n";
         return;
     }
 
@@ -93,8 +150,8 @@ void ellipse::printStats() const {
     }
 
     std::cout << "Area = " << std::setprecision(2) << std::fixed << M_PI * a * b
-              << "units^2.Perimeter = " << 2 * M_PI * sqrt((a*a + b*b)/2)
-              << "units.Intercepts : " << c1 << " = " << a
+              << " units^2.Perimeter = " << 2 * M_PI * sqrt((a*a + b*b)/2)
+              << " units.Intercepts : " << c1 << " = " << a
               << " , " << c1 << " = " << -a << " , " << c2 << " = " << b
               << " , " << c2 << " = " << -b << "\n";
 

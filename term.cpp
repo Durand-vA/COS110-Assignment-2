@@ -538,23 +538,20 @@ const term term::operator()(string inp) const {
     std::string s;
     while (std::getline(ss, s, ' ')) {
         char var = s[0];
-        int index = getVarIndex(var);
+        int index = temp.getVarIndex(var);
         if (index != -1) {
             s.erase(0, 2);
             std::stringstream st;
             int n;
             st << s;
             st >> n;
-            coeff *= pow(n, powers[index]);
+            coeff *= pow(n, temp[index]);
             temp.removeVariable(var);
         }
     }
     temp.coefficient = coeff;
 
     return term(temp);
-
-    // expected 268435456
-    // actual 128
 }
 /**
  * Equality operator

@@ -306,7 +306,7 @@ polynomial* univariate::operator*(const polynomial &other) const {
  * @return polynomial& The current object. If the result is univariate, the current object is set to the result.
  */
 polynomial &univariate::operator*=(const polynomial &other) {
-    univariate* result = new univariate(term(0, 0, NULL, NULL));
+    univariate* result = new univariate(degree, variable);
     result->clearTerms();
 
     for (int i = 0; i < numTerms; i++) {
